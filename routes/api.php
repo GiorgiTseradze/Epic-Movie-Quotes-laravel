@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('me');
+
+Route::get('google/login', [GoogleAuthController::class, 'loginWithGoogle'])->name('google.login');
+Route::get('google/callback', [GoogleAuthController::class, 'callbackGoogle'])->name('google.callback');
