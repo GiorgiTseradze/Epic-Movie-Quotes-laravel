@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -54,7 +55,7 @@ class GoogleAuthController extends Controller
 		}
 		catch (\Throwable $th)
 		{
-			dd('Something went wrong!' . $th->getMessage());
+			Log::error('Something went wrong!' . $th->getMessage());
 		}
 	}
 }
