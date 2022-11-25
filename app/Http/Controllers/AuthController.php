@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,27 +25,47 @@ class AuthController extends Controller
 	/**
 	 * Get a JWT via given credentials.
 	 */
-	public function login(LoginRequest $request): JsonResponse
+	public function login(): JsonResponse
 	{
-		$token = auth()->attempt($request->all());
+		$authenticated = auth()->attempt(
+			[
+				'email'    => request()->email,
+				'password' => request()->password,
+			]
+		);
 
-		if (!$token)
+		if (!$authenticated)
 		{
-			return response()->json(['error' => 'User Does not exist!'], 404);
+			return response()->json('wrong email or password', 401);
 		}
 
-		return $this->respondWithToken($token);
+		$payload = [
+			'exp' => Carbon::now()->addDay()->timestamp,
+			'uid' => User::where('email', '=', request()->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 
-	/**
-	 * Get the token array structure.
-	 */
-	protected function respondWithToken(string $token): JsonResponse
+	public function me(): JsonResponse
 	{
-		return response()->json([
-			'access_token' => $token,
-			'token_type'   => 'bearer',
-			'expires_in'   => auth()->factory()->getTTL() * 60,
-		]);
+		return response()->json(
+			[
+				'message' => 'authenticated successfully',
+				// 'user'    => jwtUser(),
+			],
+			200
+		);
+	}
+
+	public function logout(): JsonResponse
+	{
+		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 }
