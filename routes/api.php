@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,5 @@ Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('
 
 Route::get('google/login', [GoogleAuthController::class, 'loginWithGoogle'])->name('google.login');
 Route::get('google/callback', [GoogleAuthController::class, 'callbackGoogle'])->name('google.callback');
+
+Route::post('add-movie', [MovieController::class, 'store'])->name('movie.store');
