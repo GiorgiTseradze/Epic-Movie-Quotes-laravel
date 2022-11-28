@@ -46,4 +46,9 @@ class User extends Authenticatable
 	{
 		return $this->getKey();
 	}
+
+	public function movies()
+	{
+		return $this->hasMany(Movie::class);
+	}
 }
