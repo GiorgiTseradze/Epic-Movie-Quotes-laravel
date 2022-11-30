@@ -54,8 +54,7 @@ class MovieController extends Controller
 			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
 		}
 
-		$movie = Movie::where('name', [$request['name_en'], $request['name_ka']])->first();
-		dd($movie);
+		$movie = Movie::where('id', $request->movie_id)->first();
 
 		$movie->update([
 			'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
@@ -66,6 +65,12 @@ class MovieController extends Controller
 			'user_id'     => auth()->id(),
 		]);
 		return response()->json('Movie has been updated successfully', 200);
+	}
+
+	public function get(Movie $movie)
+	{
+		return response()->json($movie->load('quotes'));
+		// return response()->json($movie);
 	}
 
 	public function destroy(Movie $movie): JsonResponse
