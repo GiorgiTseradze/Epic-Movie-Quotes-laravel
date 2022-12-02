@@ -22,7 +22,6 @@ class AddMovieRequest extends FormRequest
 			'description_en'   => 'required',
 			'description_ka'   => 'required',
 			'image'            => 'required|image',
-			'user_id' 	        => 'nullable',
 		];
 	}
 }

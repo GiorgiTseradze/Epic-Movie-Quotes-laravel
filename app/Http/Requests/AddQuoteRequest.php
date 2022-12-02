@@ -18,7 +18,6 @@ class AddQuoteRequest extends FormRequest
 			'quote_ka'          => 'required',
 			'image'             => 'required|image',
 			'movie_id'          => 'required',
-			'user_id' 	         => 'nullable',
 		];
 	}
 }

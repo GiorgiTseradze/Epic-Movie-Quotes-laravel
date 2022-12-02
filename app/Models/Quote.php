@@ -19,7 +19,7 @@ class Quote extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function quotes()
+	public function movies()
 	{
 		return $this->belongsTo(Movie::class);
 	}

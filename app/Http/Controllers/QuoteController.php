@@ -33,13 +33,13 @@ class QuoteController extends Controller
 			'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
 			'image'        => '/storage/' . $file_path,
 			'movie_id'     => $request['movie_id'],
-			'user_id'      => auth()->id(),
+			'user_id'      => jwtUser()->id,
 		]);
 
 		return response()->json('Quote has been added successfully', 200);
 	}
 
-	public function update(UpdateQuoteRequest $request): JsonResponse
+	public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse
 	{
 		if ($request->file('image'))
 		{
@@ -53,16 +53,24 @@ class QuoteController extends Controller
 			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
 		}
 
-		$quote = Quote::where('id', $request->quote_id)->first();
-
 		$quote->update([
 			'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
 			'image'        => '/storage/' . $file_path,
-			'movie_id'     => $request['movie_id'],
-			'user_id'      => auth()->id(),
+			'user_id'      => jwtUser()->id,
 			'quote_id'     => $request['quote_id'],
 		]);
 
 		return response()->json('Quote has been updated successfully', 200);
+	}
+
+	public function get(Quote $quote)
+	{
+		return response()->json($quote->load('movies'));
+	}
+
+	public function destroy(Quote $quote): JsonResponse
+	{
+		$quote->delete();
+		return response()->json('Quote has been deleted successfully', 200);
 	}
 }

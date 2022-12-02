@@ -34,13 +34,13 @@ class MovieController extends Controller
 			'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
 			'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
 			'image'       => '/storage/' . $file_path,
-			'user_id'     => auth()->id(),
+			'user_id'     => jwtUser()->id,
 		]);
 
 		return response()->json('Movie has been added successfully', 200);
 	}
 
-	public function update(UpdateMovieRequest $request): JsonResponse
+	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
 		if ($request->file('image'))
 		{
@@ -54,15 +54,13 @@ class MovieController extends Controller
 			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
 		}
 
-		$movie = Movie::where('id', $request->movie_id)->first();
-
 		$movie->update([
 			'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
 			'genre'       => $request->genre,
 			'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
 			'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
 			'image'       => '/storage/' . $file_path,
-			'user_id'     => auth()->id(),
+			'user_id'     => jwtUser()->id,
 		]);
 		return response()->json('Movie has been updated successfully', 200);
 	}
@@ -70,7 +68,6 @@ class MovieController extends Controller
 	public function get(Movie $movie)
 	{
 		return response()->json($movie->load('quotes'));
-		// return response()->json($movie);
 	}
 
 	public function destroy(Movie $movie): JsonResponse

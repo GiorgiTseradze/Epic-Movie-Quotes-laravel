@@ -19,7 +19,7 @@ return new class extends Migration {
 			$table->json('director');
 			$table->json('description');
 			$table->string('image');
-			$table->foreignId('user_id')->nullable();
+			$table->foreignId('user_id')->constrained()->cascadeOnDelete();
 			$table->timestamps();
 		});
 	}

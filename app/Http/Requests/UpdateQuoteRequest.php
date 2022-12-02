@@ -17,7 +17,6 @@ class UpdateQuoteRequest extends FormRequest
 			'quote_en'          => 'required',
 			'quote_ka'          => 'required',
 			'image'             => 'required|image',
-			'user_id' 	         => 'nullable',
 			'quote_id'          => 'required',
 		];
 	}

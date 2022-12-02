@@ -22,7 +22,6 @@ class UpdateMovieRequest extends FormRequest
 			'description_en'   => 'required',
 			'description_ka'   => 'required',
 			'image'            => 'required|image',
-			'user_id' 	        => 'nullable',
 			'movie_id'         => 'required',
 		];
 	}
