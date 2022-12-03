@@ -21,17 +21,17 @@ class QuoteController extends Controller
 			$request->file('image')->store('photos');
 		}
 
-		$file_path = '';
+		$filePath = '';
 
 		if ($request->file('image'))
 		{
-			$file_name = time() . '_' . request()->file('image')->getClientOriginalName();
-			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
+			$fileName = time() . '_' . request()->file('image')->getClientOriginalName();
+			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
 
 		Quote::create([
 			'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
-			'image'        => '/storage/' . $file_path,
+			'image'        => '/storage/' . $filePath,
 			'movie_id'     => $request['movie_id'],
 			'user_id'      => jwtUser()->id,
 		]);
@@ -46,16 +46,16 @@ class QuoteController extends Controller
 			$request->file('image')->store('photos');
 		}
 
-		$file_path = '';
+		$filePath = '';
 		if ($request->file('image'))
 		{
-			$file_name = time() . '_' . request()->file('image')->getClientOriginalName();
-			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
+			$fileName = time() . '_' . request()->file('image')->getClientOriginalName();
+			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
 
 		$quote->update([
 			'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
-			'image'        => '/storage/' . $file_path,
+			'image'        => '/storage/' . $filePath,
 			'user_id'      => jwtUser()->id,
 			'quote_id'     => $request['quote_id'],
 		]);

@@ -20,21 +20,21 @@ class GoogleAuthController extends Controller
 	{
 		try
 		{
-			$google_user = Socialite::driver('google')->stateless()->user();
+			$googleUser = Socialite::driver('google')->stateless()->user();
 
-			$user = User::where('email', $google_user->getEmail())->first();
+			$user = User::where('email', $googleUser->getEmail())->first();
 
 			if (!$user)
 			{
-				$new_user = User::Create([
-					'name'     => $google_user->getName(),
-					'email'    => $google_user->getEmail(),
+				$newUser = User::Create([
+					'name'     => $googleUser->getName(),
+					'email'    => $googleUser->getEmail(),
 					'password' => Hash::make(''),
 				]);
 
 				$payload = [
 					'exp' => Carbon::now()->addDay()->timestamp,
-					'uid' => User::where('name', '=', $google_user->getName())->first()->id,
+					'uid' => User::where('name', '=', $googleUser->getName())->first()->id,
 				];
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
@@ -45,7 +45,7 @@ class GoogleAuthController extends Controller
 			{
 				$payload = [
 					'exp' => Carbon::now()->addDay()->timestamp,
-					'uid' => User::where('name', '=', $google_user->getName())->first()->id,
+					'uid' => User::where('name', '=', $googleUser->getName())->first()->id,
 				];
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
