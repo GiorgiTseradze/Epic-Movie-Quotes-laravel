@@ -12,15 +12,8 @@ return new class extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('movies', function (Blueprint $table) {
-			$table->id();
-			$table->json('name');
-			$table->json('genre');
-			$table->json('director');
-			$table->json('description');
-			$table->string('image');
-			$table->foreignId('user_id')->nullable();
-			$table->timestamps();
+		Schema::table('movies', function (Blueprint $table) {
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 
@@ -31,6 +24,8 @@ return new class extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('movies');
+		Schema::table('movies', function (Blueprint $table) {
+			$table->foreignId('user_id')->nullable();
+		});
 	}
 };
