@@ -21,51 +21,53 @@ class MovieController extends Controller
 			$request->file('image')->store('photos');
 		}
 
-		$file_path = '';
+		$filePath = '';
 		if ($request->file('image'))
 		{
-			$file_name = time() . '_' . request()->file('image')->getClientOriginalName();
-			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
+			$fileName = time() . '_' . request()->file('image')->getClientOriginalName();
+			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
 
 		Movie::create([
 			'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
-			'genre'       => $request->genre,
+			'genre'       => $request['genre'],
 			'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
 			'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
-			'image'       => '/storage/' . $file_path,
-			'user_id'     => auth()->id(),
+			'image'       => '/storage/' . $filePath,
+			'user_id'     => jwtUser()->id,
 		]);
 
 		return response()->json('Movie has been added successfully', 200);
 	}
 
-	public function update(UpdateMovieRequest $request): JsonResponse
+	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
 		if ($request->file('image'))
 		{
 			$request->file('image')->store('photos');
 		}
 
-		$file_path = '';
+		$filePath = '';
 		if ($request->file('image'))
 		{
-			$file_name = time() . '_' . request()->file('image')->getClientOriginalName();
-			$file_path = request()->file('image')->storeAs('images', str_replace(' ', '_', $file_name), 'public');
+			$fileName = time() . '_' . request()->file('image')->getClientOriginalName();
+			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
-
-		$movie = Movie::where('name', [$request['name_en'], $request['name_ka']])->first();
-		dd($movie);
 
 		$movie->update([
 			'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
-			'genre'       => $request->genre,
+			'genre'       => $request['genre'],
 			'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
 			'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
-			'image'       => '/storage/' . $file_path,
-			'user_id'     => auth()->id(),
+			'image'       => '/storage/' . $filePath,
+			'user_id'     => jwtUser()->id,
 		]);
 		return response()->json('Movie has been updated successfully', 200);
+	}
+
+	public function get(Movie $movie)
+	{
+		return response()->json($movie->load('quotes'));
 	}
 
 	public function destroy(Movie $movie): JsonResponse

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddMovieRequest extends FormRequest
+class UpdateMovieRequest extends FormRequest
 {
 	/**
 	 * Get the validation rules that apply to the request.
@@ -22,7 +22,7 @@ class AddMovieRequest extends FormRequest
 			'description_en'   => 'required',
 			'description_ka'   => 'required',
 			'image'            => 'required|image',
-			'user_id' 	        => 'nullable',
+			'movie_id'         => 'required',
 		];
 	}
 }
