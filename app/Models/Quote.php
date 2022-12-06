@@ -19,8 +19,13 @@ class Quote extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function movies()
+	public function movie()
 	{
 		return $this->belongsTo(Movie::class);
+	}
+
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
 	}
 }

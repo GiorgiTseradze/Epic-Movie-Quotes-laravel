@@ -11,7 +11,7 @@ class QuoteController extends Controller
 {
 	public function show(): JsonResponse
 	{
-		return response()->json(Quote::all());
+		return response()->json(Quote::all()->load('comments'));
 	}
 
 	public function store(AddQuoteRequest $request): JsonResponse
@@ -65,7 +65,7 @@ class QuoteController extends Controller
 
 	public function get(Quote $quote)
 	{
-		return response()->json($quote->load('movies'));
+		return response()->json($quote->load('movie', 'comments'));
 	}
 
 	public function destroy(Quote $quote): JsonResponse
