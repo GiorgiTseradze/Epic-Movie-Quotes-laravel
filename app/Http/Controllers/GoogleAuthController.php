@@ -8,6 +8,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class GoogleAuthController extends Controller
 {
@@ -23,13 +24,14 @@ class GoogleAuthController extends Controller
 			$googleUser = Socialite::driver('google')->stateless()->user();
 
 			$user = User::where('email', $googleUser->getEmail())->first();
-
+			$token = Str::random(60);
 			if (!$user)
 			{
 				$newUser = User::Create([
 					'name'     => $googleUser->getName(),
 					'email'    => $googleUser->getEmail(),
 					'password' => Hash::make(''),
+					'token'    => $token,
 				]);
 
 				$payload = [
