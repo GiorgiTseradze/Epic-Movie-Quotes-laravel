@@ -21,6 +21,8 @@ class ResetPasswordMail extends Mailable
 
 	public function build()
 	{
-		return $this->view('mail.reset')->subject('Reset Password');
+		return $this->from(address: 'epic@moviequotes.com', name: 'Epic Movie Quotes')
+		->view('mail.reset')
+		->subject('Reset Password');
 	}
 }

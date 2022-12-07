@@ -15,9 +15,8 @@ class SignupEmail extends Mailable
 	 *
 	 * @return void
 	 */
-	public function __construct($data)
+	public function __construct(public $user, public $token)
 	{
-		$this->signup_mail_data = $data;
 	}
 
 	/**
@@ -27,8 +26,8 @@ class SignupEmail extends Mailable
 	 */
 	public function build()
 	{
-		return $this->from(address: 'hello@example.com', name: 'coronatime')
-		->subject(subject: 'Welcome')
-		->view('mail.signup', ['mail_data' => $this->signup_mail_data]);
+		return $this->from(address: 'epic@moviequotes.com', name: 'Epic Movie Quotes')
+		->subject(subject: 'Verify Email')
+		->view('mail.signup');
 	}
 }

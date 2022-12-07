@@ -27,6 +27,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('forgot-password', [AuthController::class, 'forgot'])->name('password.email');
 Route::post('reset-password', [AuthController::class, 'reset'])->name('password.update');
+Route::post('/verify-user', [AuthController::class, 'verify'])->name('user.verify');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('me');

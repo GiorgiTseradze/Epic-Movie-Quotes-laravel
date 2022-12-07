@@ -6,7 +6,9 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\VerifyUserRequest;
 use App\Mail\ResetPasswordMail;
+use App\Mail\SignupEmail;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -20,13 +22,47 @@ class AuthController extends Controller
 {
 	public function register(RegisterRequest $request): JsonResponse
 	{
-		User::create([
-			'name'     => $request->name,
-			'email'    => $request->email,
-			'password' => Hash::make($request->password),
+		$token = Str::random(60);
+
+		$user = User::create([
+			'name'      => $request->name,
+			'email'     => $request->email,
+			'password'  => Hash::make($request->password),
+			'token'     => $token,
 		]);
 
-		return response()->json('User successfully registered!', 200);
+		$verifyUser = User::where('email', $request->email)->first();
+		Mail::to($verifyUser->email)->send(new SignupEmail($user, $token));
+
+		return response()->json('email sent, user registered');
+	}
+
+	public function verify(VerifyUserRequest $request): JsonResponse
+	{
+		$updated = DB::table('users')->where([
+			'email'=> $request->email,
+			'token'=> $request->token,
+		])->first();
+
+		if (!$updated)
+		{
+			return response()->json('token not found', 404);
+		}
+
+		User::where('email', $request->email)->update([
+			'email_verified_at'=> Carbon::now(),
+		]);
+
+		$payload = [
+			'exp' => Carbon::now()->addDay()->timestamp,
+			'uid' => User::where('email', '=', $request->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('verified, logged in')->withCookie($cookie);
 	}
 
 	/**
