@@ -39,7 +39,7 @@ class GoogleAuthController extends Controller
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return redirect(env('VITE_APP_ROOT'))->withCookie($cookie);
+				return redirect(env('VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
 			}
 			else
 			{
@@ -50,7 +50,7 @@ class GoogleAuthController extends Controller
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return redirect(env('VITE_APP_ROOT'))->withCookie($cookie);
+				return redirect(env('VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
 			}
 		}
 		catch (\Throwable $th)

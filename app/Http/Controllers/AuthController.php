@@ -6,14 +6,14 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -72,34 +72,40 @@ class AuthController extends Controller
 		);
 	}
 
-	public function forgot(ForgotPasswordRequest $request): RedirectResponse
+	public function forgot(ForgotPasswordRequest $request): JsonResponse
 	{
-		$status = Password::sendResetLink(
-			$request->only('email')
-		);
-		return $status === Password::RESET_LINK_SENT
-		? redirect()->route('verification.notice')
-		: back()->withErrors(['email' => __($status)]);
+		$token = Str::random(60);
+		DB::table('password_resets')->insert([
+			'email'     => $request->email,
+			'token'     => $token,
+			'created_at'=> Carbon::now(),
+		]);
+
+		$user = User::where('email', $request->email)->first();
+		Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+		return response()->json('email sent');
 	}
 
-	public function reset(ResetPasswordRequest $request): RedirectResponse
+	public function reset(ResetPasswordRequest $request): JsonResponse
 	{
-		$status = Password::reset(
-			$request->only('email', 'password', 'password_confirmation', 'token'),
-			function ($user, $password) {
-				$user->forceFill([
-					'password' => Hash::make($password),
-				])->setRememberToken(Str::random(60));
+		$updated = DB::table('password_resets')->where([
+			'email'=> $request->email,
+			'token'=> $request->token,
+		])->first();
 
-				$user->save();
+		if (!$updated)
+		{
+			return response()->json('token not found', 404);
+		}
 
-				event(new PasswordReset($user));
-			}
-		);
+		User::where('email', $request->email)->update([
+			'password'=> bcrypt($request->password),
+		]);
 
-		return $status === Password::PASSWORD_RESET
-					? redirect()->route('login')->with('status', __($status))
-					: back()->withErrors(['email' => [__($status)]]);
+		DB::table('password_resets')->where('email', $request->email)->delete();
+
+		return response()->json('password changed');
 	}
 
 	public function logout(): JsonResponse

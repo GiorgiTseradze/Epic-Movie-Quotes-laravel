@@ -26,9 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('forgot-password', [AuthController::class, 'forgot'])->name('password.email');
-Route::get('/reset-password/{token}', fn ($token) => view('auth.reset-password', ['token' => $token]))->name('password.reset');
-Route::post('reset-password', 'reset')->middleware('guest')->name('password.update');
-Route::view('/email/verify', 'auth.verify-email')->name('verification.notice');
+Route::post('reset-password', [AuthController::class, 'reset'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('me');

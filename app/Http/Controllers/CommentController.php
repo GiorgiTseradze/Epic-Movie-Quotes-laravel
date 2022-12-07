@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddCommentEvent;
 use App\Http\Requests\AddCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +16,8 @@ class CommentController extends Controller
 
 	public function store(AddCommentRequest $request): JsonResponse
 	{
+		event(new AddCommentEvent($request->all()));
+
 		Comment::create([
 			'comment'        => $request['comment'],
 			'quote_id'       => $request['quote_id'],
