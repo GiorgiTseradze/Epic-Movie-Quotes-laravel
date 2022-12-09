@@ -6,6 +6,7 @@ use App\Http\Requests\AddQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
@@ -72,5 +73,37 @@ class QuoteController extends Controller
 	{
 		$quote->delete();
 		return response()->json('Quote has been deleted successfully', 200);
+	}
+
+	public function search(Request $request): JsonResponse
+	{
+		$quotes = [];
+		$search = $request->search;
+		if ($search[0] == '@')
+		{
+			$search = ltrim($search, '@');
+			$quotes = Quote::whereHas('movie', function ($query) use ($search) {
+				$query
+					->where('name->en', 'like', $search . '%')
+					->orWhere('name->ka', 'like', $search . '%');
+			})->get();
+		}
+		elseif ($search[0] == '#')
+		{
+			$search = ltrim($search, '#');
+			$quotes = Quote::query()
+				->where('quote->en', 'like', '%' . $search . '%')
+				->orWhere('quote->ka', 'like', '%' . $search . '%')
+				->get();
+		}
+		else
+		{
+			$quotes = Quote::whereHas('movie', function ($query) use ($search) {
+				$query
+					->where('name->en', 'like', $search . '%')->orWhere('name->ka', 'like', $search . '%');
+			})->orwhere('quote->en', 'like', '%' . $search . '%')
+			->orwhere('quote->ka', 'like', '%' . $search . '%')->get();
+		}
+		return response()->json($quotes)->load('comments');
 	}
 }

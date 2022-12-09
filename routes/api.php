@@ -46,6 +46,8 @@ Route::post('update-quote/{quote:id}', [QuoteController::class, 'update'])->name
 Route::post('delete-quote/{quote:id}', [QuoteController::class, 'destroy'])->name('quote.destroy');
 Route::get('quotes/show', [QuoteController::class, 'show'])->name('quote.show');
 Route::get('quotes/{quote:id}', [QuoteController::class, 'get'])->name('quote.get');
+Route::post('search', [QuoteController::class, 'search'])->name('search');
+Route::get('search', [QuoteController::class, 'search'])->name('search.show');
 
 Route::post('add-comment', [CommentController::class, 'store'])->name('comment.store');
 Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
