@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
@@ -51,3 +52,5 @@ Route::get('search', [QuoteController::class, 'search'])->name('search.show');
 
 Route::post('add-comment', [CommentController::class, 'store'])->name('comment.store');
 Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
+
+Route::post('add-like', [LikeController::class, 'store'])->name('like.store');

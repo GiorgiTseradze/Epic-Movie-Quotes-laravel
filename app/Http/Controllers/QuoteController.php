@@ -12,7 +12,7 @@ class QuoteController extends Controller
 {
 	public function show(): JsonResponse
 	{
-		return response()->json(Quote::all()->load('comments'));
+		return response()->json(Quote::all()->load('comments', 'likes'));
 	}
 
 	public function store(AddQuoteRequest $request): JsonResponse
@@ -54,19 +54,30 @@ class QuoteController extends Controller
 			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
 
-		$quote->update([
-			'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
-			'image'        => '/storage/' . $filePath,
-			'user_id'      => jwtUser()->id,
-			'quote_id'     => $request['quote_id'],
-		]);
+		if ($filePath)
+		{
+			$quote->update([
+				'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
+				'image'        => '/storage/' . $filePath,
+				'user_id'      => jwtUser()->id,
+				'quote_id'     => $request['quote_id'],
+			]);
+		}
+		else
+		{
+			$quote->update([
+				'quote'        => ['en' => $request['quote_en'], 'ka' => $request['quote_ka']],
+				'user_id'      => jwtUser()->id,
+				'quote_id'     => $request['quote_id'],
+			]);
+		}
 
 		return response()->json('Quote has been updated successfully', 200);
 	}
 
 	public function get(Quote $quote)
 	{
-		return response()->json($quote->load('movie', 'comments'));
+		return response()->json($quote->load('movie', 'comments', 'likes'));
 	}
 
 	public function destroy(Quote $quote): JsonResponse
@@ -104,6 +115,6 @@ class QuoteController extends Controller
 			})->orwhere('quote->en', 'like', '%' . $search . '%')
 			->orwhere('quote->ka', 'like', '%' . $search . '%')->get();
 		}
-		return response()->json($quotes)->load('comments');
+		return response()->json($quotes->load('comments'));
 	}
 }
