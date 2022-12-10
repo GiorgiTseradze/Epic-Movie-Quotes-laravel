@@ -92,7 +92,14 @@ class AuthController extends Controller
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 
-		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+		$remember = 1440;
+
+		if ($request->remember == 'yes')
+		{
+			$remember = 43000;
+		}
+
+		$cookie = cookie('access_token', $jwt, $remember, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
 		return response()->json('success', 200)->withCookie($cookie);
 	}
@@ -102,7 +109,7 @@ class AuthController extends Controller
 		return response()->json(
 			[
 				'message' => 'authenticated successfully',
-				// 'user'    => jwtUser(),
+				'user'    => jwtUser(),
 			],
 			200
 		);
