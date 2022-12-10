@@ -67,7 +67,7 @@ class MovieController extends Controller
 
 	public function get(Movie $movie)
 	{
-		return response()->json($movie->load('quotes'));
+		return response()->json($movie->load('quotes.likes', 'quotes.comments'));
 	}
 
 	public function destroy(Movie $movie): JsonResponse
