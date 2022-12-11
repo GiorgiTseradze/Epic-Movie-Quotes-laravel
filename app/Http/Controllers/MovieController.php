@@ -11,7 +11,7 @@ class MovieController extends Controller
 {
 	public function show(): JsonResponse
 	{
-		return response()->json(Movie::all());
+		return response()->json(jwtUser()->movies);
 	}
 
 	public function store(AddMovieRequest $request): JsonResponse
@@ -53,15 +53,28 @@ class MovieController extends Controller
 			$fileName = time() . '_' . request()->file('image')->getClientOriginalName();
 			$filePath = request()->file('image')->storeAs('images', str_replace(' ', '_', $fileName), 'public');
 		}
+		if ($filePath)
+		{
+			$movie->update([
+				'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
+				'genre'       => $request['genre'],
+				'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
+				'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
+				'image'       => '/storage/' . $filePath,
+				'user_id'     => jwtUser()->id,
+			]);
+		}
+		else
+		{
+			$movie->update([
+				'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
+				'genre'       => $request['genre'],
+				'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
+				'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
+				'user_id'     => jwtUser()->id,
+			]);
+		}
 
-		$movie->update([
-			'name'        => ['en' => $request['name_en'], 'ka' => $request['name_ka']],
-			'genre'       => $request['genre'],
-			'director'    => ['en' => $request['director_en'], 'ka' => $request['director_ka']],
-			'description' => ['en' => $request['description_en'], 'ka' => $request['description_ka']],
-			'image'       => '/storage/' . $filePath,
-			'user_id'     => jwtUser()->id,
-		]);
 		return response()->json('Movie has been updated successfully', 200);
 	}
 

@@ -12,7 +12,7 @@ class QuoteController extends Controller
 {
 	public function show(): JsonResponse
 	{
-		return response()->json(Quote::all()->load('comments', 'likes'));
+		return response()->json(Quote::with('comments.user', 'likes', 'user')->orderBy('created_at', 'desc')->get());
 	}
 
 	public function store(AddQuoteRequest $request): JsonResponse
@@ -77,7 +77,7 @@ class QuoteController extends Controller
 
 	public function get(Quote $quote)
 	{
-		return response()->json($quote->load('movie', 'comments', 'likes'));
+		return response()->json($quote->load('movie', 'comments', 'likes', 'user'));
 	}
 
 	public function destroy(Quote $quote): JsonResponse
@@ -115,6 +115,6 @@ class QuoteController extends Controller
 			})->orwhere('quote->en', 'like', '%' . $search . '%')
 			->orwhere('quote->ka', 'like', '%' . $search . '%')->get();
 		}
-		return response()->json($quotes->load('comments'));
+		return response()->json($quotes->load('comments.user', 'user', 'likes', ));
 	}
 }
