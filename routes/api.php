@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,3 +55,5 @@ Route::post('add-comment', [CommentController::class, 'store'])->name('comment.s
 Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
 
 Route::post('add-like', [LikeController::class, 'store'])->name('like.store');
+Route::post('read', [NotificationController::class, 'read'])->name('notifications.read');
+Route::get('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');

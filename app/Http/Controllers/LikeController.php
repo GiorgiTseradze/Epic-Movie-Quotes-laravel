@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddLikeEvent;
+use App\Events\AddNotificationEvent;
 use App\Http\Requests\AddLikeRequest;
 use App\Models\Like;
+use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
@@ -22,6 +24,17 @@ class LikeController extends Controller
 			'user_id'  => jwtuser()->id,
 			'quote_id' => $request->quote_id,
 		]);
+
+		if (jwtUser()->id != $request['to_id'])
+		{
+			$notification = Notification::create([
+				'from_id'=> jwtUser()->id,
+				'to_id'  => $request['to_id'],
+				'type'   => 'like',
+			]);
+
+			event(new AddNotificationEvent($notification->load('sender')));
+		}
 
 		return response()->json('like added');
 	}
