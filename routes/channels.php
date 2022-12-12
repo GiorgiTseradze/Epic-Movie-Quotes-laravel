@@ -20,3 +20,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('add-comment', function () {
 	return true;
 });
+
+Broadcast::channel('add-like', function () {
+	return true;
+});
+
+Broadcast::channel('add-notification.{id}', function ($user, $id) {
+	return (int) jwtUser()->id === (int) $id;
+});

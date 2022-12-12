@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 		'email',
 		'password',
 		'token',
+		'thumbnail',
 	];
 
 	/**
@@ -59,5 +60,15 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 	public function quotes()
 	{
 		return $this->hasMany(Quote::class);
+	}
+
+	public function likes()
+	{
+		return $this->hasMany(Like::class);
+	}
+
+	public function notifications()
+	{
+		return $this->hasMany(Notification::class);
 	}
 }

@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,12 @@ Route::post('update-quote/{quote:id}', [QuoteController::class, 'update'])->name
 Route::post('delete-quote/{quote:id}', [QuoteController::class, 'destroy'])->name('quote.destroy');
 Route::get('quotes/show', [QuoteController::class, 'show'])->name('quote.show');
 Route::get('quotes/{quote:id}', [QuoteController::class, 'get'])->name('quote.get');
+Route::post('search', [QuoteController::class, 'search'])->name('search');
+Route::get('search', [QuoteController::class, 'search'])->name('search.show');
 
 Route::post('add-comment', [CommentController::class, 'store'])->name('comment.store');
 Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
+
+Route::post('add-like', [LikeController::class, 'store'])->name('like.store');
+Route::post('read', [NotificationController::class, 'read'])->name('notifications.read');
+Route::get('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
