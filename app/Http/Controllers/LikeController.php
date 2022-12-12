@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Events\AddLikeEvent;
 use App\Events\AddNotificationEvent;
-use App\Http\Requests\AddLikeRequest;
 use App\Models\Like;
 use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
-	public function store(AddLikeRequest $request): JsonResponse
+	public function store(Request $request): JsonResponse
 	{
 		event(new AddLikeEvent($request->all()));
 		$like = Like::where('user_id', jwtUser()->id)->where('quote_id', $request->quote_id)->first();
