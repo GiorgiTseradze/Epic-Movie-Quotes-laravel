@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 		'password',
 		'token',
 		'thumbnail',
+		'google_id',
 	];
 
 	/**
@@ -70,5 +71,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 	public function notifications()
 	{
 		return $this->hasMany(Notification::class);
+	}
+
+	public function emails()
+	{
+		return $this->hasMany(Email::class);
 	}
 }

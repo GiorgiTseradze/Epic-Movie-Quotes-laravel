@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,8 +50,9 @@ Route::post('update-quote/{quote:id}', [QuoteController::class, 'update'])->name
 Route::post('delete-quote/{quote:id}', [QuoteController::class, 'destroy'])->name('quote.destroy');
 Route::get('quotes/show', [QuoteController::class, 'show'])->name('quote.show');
 Route::get('quotes/{quote:id}', [QuoteController::class, 'get'])->name('quote.get');
-Route::post('search', [QuoteController::class, 'search'])->name('search');
+Route::post('search', [QuoteController::class, 'search'])->name('quote.search');
 Route::get('search', [QuoteController::class, 'search'])->name('search.show');
+Route::post('refresh', [QuoteController::class, 'refresh'])->name('quote.refresh');
 
 Route::post('add-comment', [CommentController::class, 'store'])->name('comment.store');
 Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
@@ -57,3 +60,8 @@ Route::get('comments/show', [CommentController::class, 'show'])->name('comment.s
 Route::post('add-like', [LikeController::class, 'store'])->name('like.store');
 Route::post('read', [NotificationController::class, 'read'])->name('notifications.read');
 Route::get('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
+
+Route::post('update-profile', [ProfileController::class, 'update'])->name('thumbnail.update');
+Route::post('add-email', [EmailController::class, 'store'])->name('email.store');
+Route::post('verify-email', [EmailController::class, 'verify'])->name('email.verify');
+Route::post('delete-email/{email:id}', [EmailController::class, 'destroy'])->name('email.destroy');
