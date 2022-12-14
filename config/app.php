@@ -207,4 +207,11 @@ return [
 	'aliases' => Facade::defaultAliases()->merge([
 		// 'ExampleClass' => App\Example\ExampleClass::class,
 	])->toArray(),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Front DOMAIN
+	|--------------------------------------------------------------------------
+	*/
+	'FRONT_DOMAIN' => env('VITE_APP_ROOT'),
 ];
