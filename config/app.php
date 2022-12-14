@@ -210,8 +210,9 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Front DOMAIN
+	| FRONT DOMAINS
 	|--------------------------------------------------------------------------
 	*/
-	'FRONT_DOMAIN' => env('VITE_APP_ROOT'),
+	'FRONT_DOMAIN'           => env('VITE_APP_ROOT'),
+	'VITE_APP_ROOT_NEWSFEED' => env('VITE_APP_ROOT_NEWSFEED'),
 ];
