@@ -1,0 +1,19 @@
+components:
+  responses:
+    user:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/product.yaml#/components/schemas/User"
+                  # - type: object
+                  #   properties:
+                  #     categories:
+                  #       type: array
+                  #       items:
+                  #         type: string
+                  #         $ref: "../schemas/category.yaml#/components/schemas/Category"
