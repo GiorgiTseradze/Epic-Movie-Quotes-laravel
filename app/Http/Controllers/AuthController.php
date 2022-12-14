@@ -9,6 +9,7 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\VerifyUserRequest;
 use App\Mail\ResetPasswordMail;
 use App\Mail\SignupEmail;
+use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -82,12 +83,30 @@ class AuthController extends Controller
 
 		if (!$authenticated)
 		{
+			$email = Email::where('email', '=', $request->email)->first();
+			if ($email)
+			{
+				$loginEmail = $email->user->email;
+				$authenticated = auth()->attempt([
+					'email'    => $loginEmail,
+					'password' => $request->password,
+				]);
+				$user = auth()->user();
+				if ($email->email_verified_at === null)
+				{
+					return response()->json(['error' => 'Non primary email is not verified'], 403);
+				}
+			}
+		}
+
+		if (!$authenticated)
+		{
 			return response()->json('wrong email or password', 401);
 		}
 
 		$payload = [
 			'exp' => Carbon::now()->addDay()->timestamp,
-			'uid' => User::where($field, '=', request()->email)->first()->id,
+			'uid' => auth()->user()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
@@ -109,7 +128,7 @@ class AuthController extends Controller
 		return response()->json(
 			[
 				'message' => 'authenticated successfully',
-				'user'    => jwtUser(),
+				'user'    => jwtUser()->load('emails'),
 			],
 			200
 		);
