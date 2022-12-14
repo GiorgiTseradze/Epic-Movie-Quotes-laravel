@@ -91,25 +91,19 @@ class AuthController extends Controller
 					'email'    => $loginEmail,
 					'password' => $request->password,
 				]);
-				
-				$user = auth()->user();
 
-				if ($email->email_verified_at === null)
-				{
-					return response()->json(['error' => 'Non primary email is not verified'], 403);
-				}
+				$user = auth()->user();
 			}
+		}
+
+		if ($email->email_verified_at === null)
+		{
+			return response()->json(['error' => 'Non primary email is not verified'], 403);
 		}
 
 		if (!$authenticated)
 		{
 			return response()->json('wrong email or password', 401);
-		}
-
-		if ($user->email_verified_at === null)
-		{
-			$user->;
-			return response()->json(['error' => 'Email is not verified'], 403);
 		}
 
 		$payload = [
