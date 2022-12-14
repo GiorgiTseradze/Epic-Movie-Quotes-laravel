@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class ProfileUpdateRequest extends FormRequest
 {
 	/**
 	 * Get the validation rules that apply to the request.
@@ -14,9 +14,10 @@ class RegisterRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'            => 'required|min:3|unique:users,name',
-			'email'           => 'required|min:3|unique:users,email',
-			'password'        => 'required|min:8|confirmed',
+			'thumbnail' => '',
+			'name'      => 'min:3|unique:users,name',
+			'email'     => '',
+			'password'  => 'min:8|confirmed',
 		];
 	}
 }

@@ -33,6 +33,7 @@ class GoogleAuthController extends Controller
 					'password'  => Hash::make(''),
 					'token'     => $token,
 					'thumbnail' => $googleUser->avatar,
+					'google_id' => $googleUser->id,
 				]);
 
 				$payload = [
@@ -48,7 +49,7 @@ class GoogleAuthController extends Controller
 			{
 				$payload = [
 					'exp' => Carbon::now()->addDay()->timestamp,
-					'uid' => User::where('name', '=', $googleUser->getName())->first()->id,
+					'uid' => User::where('email', '=', $googleUser->getEmail())->first()->id,
 				];
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
