@@ -12,7 +12,12 @@ class QuoteController extends Controller
 {
 	public function show(): JsonResponse
 	{
-		return response()->json(Quote::with('comments.user', 'likes', 'user')->orderBy('created_at', 'desc')->get());
+		return response()->json(Quote::with('comments.user', 'likes', 'user')->orderBy('created_at', 'desc')->paginate(2));
+	}
+
+	public function refresh(Request $request): JsonResponse
+	{
+		return response()->json(Quote::take($request->number)->with('user')->with('movie')->with('comments.user')->withCount('likes')->with('likes')->orderBy('created_at', 'desc')->get());
 	}
 
 	public function store(AddQuoteRequest $request): JsonResponse
