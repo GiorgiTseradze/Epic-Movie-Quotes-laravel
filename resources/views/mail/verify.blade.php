@@ -24,14 +24,15 @@
             </div>
             <div style="margin-left: 3%; width: 80%; height:10%;">
                 <p>
-                    Thanks for joining Movie quotes! We really appreciate it. Please click the button below to verify your account:                </p>
+                    Please click the button below to verify your new email:
+                </p>
             </div>
             <div style="margin-left: 3%; width: 80%; height:10%">
                 <div style="background-color: #E31221; width: 5.5rem; height:1.2rem; border-radius: 25px;">
                     <a style="margin-left: 1.3rem; padding: 0 0.5 0 0.5rem; text-decoration:none; color:white;" 
-                    href="{{env('VITE_APP_ROOT').'email-confirm?verify_user_token='.$token.'&email='.$user->email}}">
+                    href="{{env('VITE_APP_ROOT').'new-email-confirm?verify_user_token='.$email->token.'&email='.$email->email}}">
                     Verify</a>
-                </div>
+            </div>
             </div>
             <div style="margin-left: 3%; width: 80%;">
                 <p>
@@ -40,7 +41,7 @@
             </div>
             <div style="margin-left: 3%; width: 80%; height: 20%; color:#DDCCAA;">
                 <p style="word-wrap: break-word;">
-                    {{env('VITE_APP_ROOT').'email-confirm?verify_user_token='.$token.'&email='.$user->email}}
+                    {{env('VITE_APP_ROOT').'new-email-confirm?verify_user_token='.$email->token.'&email='.$email->email}}
                 </p>
             </div>
             <div style="margin-left:3%; width: 80%;">
