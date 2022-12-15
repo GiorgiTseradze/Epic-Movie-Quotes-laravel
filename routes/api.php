@@ -8,6 +8,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +39,7 @@ Route::controller(AuthController::class)
 	Route::post('forgot-password', 'forgot')->name('password.email');
 	Route::post('reset-password', 'reset')->name('password.update');
 	Route::post('/verify-user', 'verify')->name('user.verify');
-	Route::post('logout', 'logout')->name('logout');
+	Route::get('logout', 'logout')->name('logout');
 });
 
 Route::controller(MovieController::class)
