@@ -75,7 +75,7 @@ class MovieController extends Controller
 			]);
 		}
 
-		return response()->json('Movie has been updated successfully', 200);
+		return response()->json('Movie has been updated successfully', 201);
 	}
 
 	public function get(Movie $movie)

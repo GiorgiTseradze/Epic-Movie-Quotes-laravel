@@ -36,6 +36,6 @@ class LikeController extends Controller
 			event(new AddNotificationEvent($notification->load('sender')));
 		}
 
-		return response()->json('like added');
+		return response()->json('like added', 201);
 	}
 }

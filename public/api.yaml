@@ -5,81 +5,100 @@ info:
   version: 0.1.9
 
 servers:
-  - url: http://localhost:8000/api
+  - url: http://127.0.0.1:8000/api
     description: local server
-  - url: http://producation.app/api
+  - url: https://api.epic-movie-quotes.giorgi-tseradze.redberryinternship.ge/api
     description: production server
 
 paths:
-  /register:
-    post:
-      summary: User register.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
   /login:
-    post:
-      summary: User login.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1login"
+  /register:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1register"
   /forgot-password:
-    post:
-      summary: User forgot password.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1forgot-password"
   /reset-password:
-    post:
-      summary: User password reset.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1reset-password"
   /verify-user:
-    post:
-      summary: User verification.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1verify-user"
   /logout:
-    post:
-      summary: User log out.
-      responses:
-        '200': 
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1logout"
+
+  /update-profile:
+    $ref: "./_swagger/paths/profile.yaml#/paths/~1update-profile"
+
+  /add-email:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1add-email"
+  /verify-email:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1verify-email"
+  /delete-email/{id}:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1delete-email~1{id}"
+
+  /add-movie:
+    $ref: "./_swagger/paths/movie.yaml#/paths/~1add-movie"
+  /update-movie/{id}:
+    $ref: "./_swagger/paths/movie.yaml#/paths/~1update-movie~1{id}"
+  /delete-movie/{id}:
+    $ref: "./_swagger/paths/movie.yaml#/paths/~1delete-movie~1{id}"
+  /movies/show:
+    $ref: "./_swagger/paths/movie.yaml#/paths/~1movies~1show"
+  /movies/{id}:
+    $ref: "./_swagger/paths/movie.yaml#/paths/~1movies~1{id}"
+
+  /add-quote:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1add-quote"
+  /update-quote/{id}:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1update-quote~1{id}"
+  /delete-quote/{id}:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1delete-quote~1{id}"
+  /quotes/show:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1quotes~1show"
+  /quotes/{id}:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1quotes~1{id}"
+  /search:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1search"
+  /refresh:
+    $ref: "./_swagger/paths/quote.yaml#/paths/~1refresh"
+
+  /notifications/show:
+    $ref: "./_swagger/paths/notification.yaml#/paths/~1notifications~1show"
+  /read:
+    $ref: "./_swagger/paths/notification.yaml#/paths/~1read"
+
+  /add-comments:
+    $ref: "./_swagger/paths/comment.yaml#/paths/~1add-comment"
+  /comments/show:
+    $ref: "./_swagger/paths/comment.yaml#/paths/~1comments~1show"
+
+  /add-like:
+    $ref: "./_swagger/paths/like.yaml#/paths/~1add-like"
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      allOf:
+        - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"
+    Movie:
+      allOf:
+        - $ref: "./_swagger/schemas/movie.yaml#/components/schemas/Movie"
+    Quote:
+      allOf:
+        - $ref: "./_swagger/schemas/quote.yaml#/components/schemas/Quote"
+    Notification:
+      allOf:
+        - $ref: "./_swagger/schemas/notification.yaml#/components/schemas/Notification"
+    Like:
+      allOf:
+        - $ref: "./_swagger/schemas/like.yaml#/components/schemas/Like"
+    Email:
+      allOf:
+        - $ref: "./_swagger/schemas/email.yaml#/components/schemas/Email"
+    Comment:
+      allOf:
+        - $ref: "./_swagger/schemas/comment.yaml#/components/schemas/Comment"

@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: Epic Movie Quotes API
+  description: Here goes description
+  version: 0.1.9
+
+servers:
+  - url: http://127.0.0.1:8000/api
+    description: local server
+  - url: https://api.epic-movie-quotes.giorgi-tseradze.redberryinternship.ge/
+    description: production server
+
+paths:
+  /login:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1login"
+  /register:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1register"
+  /forgot-password:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1forgot-password"
+  /reset-password:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1reset-password"
+  /verify-user:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1verify-user"
+  /logout:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1logout"
+
+  /update-profile:
+    $ref: "./_swagger/paths/profile.yaml#/paths/~1update-profile"
+
+  /add-email:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1add-email"
+  /verify-email:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1verify-email"
+  /delete-email/{id}:
+    $ref: "./_swagger/paths/email.yaml#/paths/~1delete-email~1{id}"

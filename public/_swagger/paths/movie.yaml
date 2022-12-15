@@ -1,0 +1,186 @@
+paths:
+  /add-movie:
+    post:
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Adds movie
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_en:
+                  type: string
+                  example: Lolita
+                name_ka:
+                  type: string
+                  example: ლოლიტა
+                director_en:
+                  type: string
+                  example: Oscar de la hoya
+                director_ka:
+                  type: string
+                  example: დები იშხნელები
+                description_en:
+                  type: string
+                  example: Good movie with actions
+                description_ka:
+                  type: string
+                  example: კარგი ფილმი ექშენებით
+                genre:
+                  type: array
+                  example:
+                    [ "drama", "comedy" ]
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Movie has been added successfully
+        "401":
+          description: Unauthorized, token not present
+
+  /update-movie/{id}:
+    post:
+      parameters:
+        - in: path
+          name: movie:Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Movie Id
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Updates movie
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_en:
+                  type: string
+                  example: Lolita
+                name_ka:
+                  type: string
+                  example: ლოლიტა
+                director_en:
+                  type: string
+                  example: Oscar de la hoya
+                director_ka:
+                  type: string
+                  example: დები იშხნელები
+                description_en:
+                  type: string
+                  example: Good movie with actions
+                description_ka:
+                  type: string
+                  example: კარგი ფილმი ექშენებით
+                genre:
+                  type: array
+                  example:
+                    [ "drama", "comedy" ]
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Movie has been updated successfully
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /delete-movie/{id}:
+    post:
+      parameters:
+        - in: path
+          name: movie:Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Movie Id
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Deletes movie
+      responses:
+        "200":
+          description: Movie has been deleted successfully
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /movies/show:
+    get:
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Shows all movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: success
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /movies/{id}:
+    get:
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Shows a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movie_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "../schemas/movie.yaml#/components/schemas/Movie"
+                    - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                    - $ref: "../schemas/like.yaml#/components/schemas/Like"
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+            
+
+                

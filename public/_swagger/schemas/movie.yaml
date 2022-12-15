@@ -1,0 +1,51 @@
+components:
+  schemas:
+    Movie:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              min: 1
+              example: 1
+            quote:
+              type: json
+              example: {
+                "en":
+                  "Snatch",
+                "ka":
+                  "სნეჩი"
+              }
+            director:
+              type: json
+              example: {
+                "en":
+                  "Ritchie",
+                "ka":
+                  "რიჩი"
+              }
+            description:
+              type: json
+              example: {
+                "en":
+                  "gypsies gypsies gypsies",
+                "ka":
+                  "ბოშები ბოშები ბოშები"
+              }
+            genres:
+              type: array
+              example:
+                [ action, comedy ]
+            image:
+              type: string
+              example: /storage/assets/snatch.jpg
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+      required:
+        - id
+        - director
+        - description
+        - image
+        - user_id
+        - created_at
+        - updated_at

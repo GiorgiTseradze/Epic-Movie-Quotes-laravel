@@ -1,0 +1,88 @@
+paths:
+  /add-email:
+    post:
+      tags:
+        - Email
+      security:   
+        - bearerAuth: []
+      summary: Adds additional email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: 
+                  type: string
+                  example: messi@arg.com
+                user_id:
+                  type: string
+                  example: '1'
+                token:
+                  type: string
+                  example: '1'
+              required:
+                - email
+                - user_id
+                - token
+      responses:
+        "201":
+          description: New email registered
+        "401":
+          description: Unauthorized, token not present
+
+  /verify-email:
+    post:
+      tags:
+        - Email
+      security:   
+        - bearerAuth: []
+      summary: Verifies new email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: 
+                  type: string
+                  example: messi@arg.com
+                token: 
+                  type: string
+                  example: "kqKoEDClv2WXkRMnypYtOvwQviKlieA6ilR6WlV53DdUBuP8O9PWmdvpuEgP"
+              required:
+                - email
+                - token
+      responses:
+        "200":
+          description: New email verified
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Unauthorized, token not found
+
+  /delete-email/{id}:
+    post:
+      parameters:
+        - in: path
+          name: movie:Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Movie Id
+      tags:
+        - Email
+      security:   
+        - bearerAuth: []
+      summary: Deletes email
+      responses:
+        "200":
+          description: Email has been deleted successfully
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Email not found

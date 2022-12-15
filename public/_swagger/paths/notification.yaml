@@ -1,0 +1,47 @@
+paths:
+  /notifications/show:
+    get:
+      tags:
+        - Notification
+      security:   
+        - bearerAuth: []
+      summary: Shows all notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "../schemas/notification.yaml#/components/schemas/Notification"
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /read:
+    post:
+      tags:
+        - Notification
+      security:   
+        - bearerAuth: []
+      summary: Mark notifications as read
+      responses:
+        "200":
+          description: All read
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
