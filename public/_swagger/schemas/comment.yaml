@@ -1,0 +1,18 @@
+components:
+  schemas:
+    Comment:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 1
+            quote_id:
+              type: integer
+              example: 1
+            comment:
+              type: string
+              example: argeintina champ
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+

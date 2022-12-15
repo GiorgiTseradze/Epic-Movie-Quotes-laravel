@@ -1,0 +1,26 @@
+paths:
+  /add-like:
+    post:
+      tags:
+        - Like
+      security:   
+        - bearerAuth: []
+      summary: Adds like
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: Good job boy
+                quote_id:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: like added
+        "401":
+          description: Unauthorized, token not present

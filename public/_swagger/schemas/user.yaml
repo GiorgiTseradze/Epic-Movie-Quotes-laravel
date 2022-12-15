@@ -1,0 +1,30 @@
+components:
+  schemas:
+    User:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            name:
+              type: string
+              example: Lionel Messi
+            email: 
+              type: string
+              example: messi@arg.com
+            password:
+              type: string
+              example: "Laravel123"
+            google_id:
+              type: string
+              example: "123214324324242234"
+            remember_token:
+              type: string
+              example: "32qwe19997sada004e932"
+            token: 
+              type: string
+              example: "kqKoEDClv2WXkRMnypYtOvwQviKqieA6ilR6WlV53DdUBuP8O9PWmdvzuEgP"
+            thumbnail:
+              type: string
+              example: "http://127.0.0.1:8000/assets/default.png"
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+

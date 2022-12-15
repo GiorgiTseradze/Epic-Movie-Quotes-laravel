@@ -1,0 +1,244 @@
+paths:
+  /add-quote:
+    post:
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Adds quote
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                quote_en:
+                  type: string
+                  example: Good job boy
+                quote_ka:
+                  type: string
+                  example: კარგი ხარ ბიჭი
+                movie_id:
+                  type: integer
+                  example: 1
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Quote has been added successfully
+        "401":
+          description: Unauthorized, token not present
+
+  /update-quote/{id}:
+    post:
+      parameters:
+        - in: path
+          name: quote:Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Quote Id
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Updates quote
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                quote_en:
+                  type: string
+                  example: Lolita
+                quote_ka:
+                  type: string
+                  example: ლოლიტა
+                quote_id:
+                  type: string
+                  example: Oscar de la hoya
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Quote has been updated successfully
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /delete-quote/{id}:
+    post:
+      parameters:
+        - in: path
+          name: quote:Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Quote Id
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Deletes Quote
+      responses:
+        "200":
+          description: Quote has been deleted successfully
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /quotes/show:
+    get:
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Shows all quotes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: success
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /quotes/{id}:
+    get:
+      tags:
+        - Movie
+      security:   
+        - bearerAuth: []
+      summary: Shows a quote
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                quote_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "../schemas/quote.yaml#/components/schemas/Quote"
+                    - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                    - $ref: "../schemas/like.yaml#/components/schemas/Like"
+                    - $ref: "../schemas/user.yaml#/components/schemas/User"
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+
+  /search:
+    post:
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Searchs quotes
+      requestBody:
+        required: true
+        content:
+            application/json:
+            schema:
+              type: object
+              properties:
+                quote:
+                  type: string
+                  example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "../schemas/quote.yaml#/components/schemas/Quote"
+                    - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                    - $ref: "../schemas/like.yaml#/components/schemas/Like"
+                    - $ref: "../schemas/user.yaml#/components/schemas/User"
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+  get:
+    tags:
+      - Quote
+    security:   
+      - bearerAuth: []
+    summary: Shows searched quotes
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/quote.yaml#/components/schemas/Quote"
+                  - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                  - $ref: "../schemas/like.yaml#/components/schemas/Like"
+                  - $ref: "../schemas/user.yaml#/components/schemas/User"
+      "401":
+        description: Unauthorized, token not present
+      "404":
+        description: Not found
+
+  /refresh:
+    get:
+      tags:
+        - Quote
+      security:   
+        - bearerAuth: []
+      summary: Refresh quotes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "../schemas/quote.yaml#/components/schemas/Quote"
+                    - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                    - $ref: "../schemas/like.yaml#/components/schemas/Like"
+                    - $ref: "../schemas/user.yaml#/components/schemas/User"
+        "401":
+          description: Unauthorized, token not present
+        "404":
+          description: Not found
+            
+
+                

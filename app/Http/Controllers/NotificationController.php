@@ -15,6 +15,6 @@ class NotificationController extends Controller
 	public function read(): JsonResponse
 	{
 		Notification::query()->where('to_id', jwtUser()->id)->update(['read' => 1]);
-		return response()->json('all read');
+		return response()->json('all read', 200);
 	}
 }

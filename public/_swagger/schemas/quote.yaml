@@ -1,0 +1,35 @@
+components:
+  schemas:
+    Quote:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              min: 1
+              example: 1
+            movie_id:
+              type: integer
+              min: 1
+              example: 1
+            quote:
+              type: json
+              example: {
+                "en":
+                  "Givi its us, Givi",
+                "ka":
+                  "გივი ჩვენ ვართ, გივი"
+              }
+            image:
+              type: string
+              example: /storage/assets/dbc.jpg
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+      required:
+        - id
+        - director
+        - description
+        - image
+        - user_id
+        - created_at
+        - updated_at

@@ -42,7 +42,7 @@ class QuoteController extends Controller
 			'user_id'      => jwtUser()->id,
 		]);
 
-		return response()->json('Quote has been added successfully', 200);
+		return response()->json('Quote has been added successfully', 201);
 	}
 
 	public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse

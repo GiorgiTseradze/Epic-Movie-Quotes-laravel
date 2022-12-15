@@ -1,0 +1,35 @@
+paths:
+  /update-profile:
+    post:
+      tags:
+        - Profile
+      security:   
+        - bearerAuth: []
+      summary: Updates user info
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: 
+                  type: string
+                  example: messi@arg.com
+                name:
+                  type: string
+                  example: 'mzia@redb.ge'
+                  minLength: 4
+                  maxLength: 15
+                password:
+                  type: string
+                  example: 'JackMa1002'
+                  minLength: 8
+                  maxLength: 15
+      responses:
+        "200":
+          description: Profile updated!
+        "400":
+          description: Problem updating user!
+        "401":
+          description: token not present

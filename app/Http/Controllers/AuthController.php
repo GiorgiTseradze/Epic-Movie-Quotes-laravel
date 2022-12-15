@@ -35,7 +35,7 @@ class AuthController extends Controller
 		$verifyUser = User::where('email', $request->email)->first();
 		Mail::to($verifyUser->email)->send(new SignupEmail($user, $token));
 
-		return response()->json('email sent, user registered', 200);
+		return response()->json('email sent, user registered', 201);
 	}
 
 	public function verify(VerifyUserRequest $request): JsonResponse

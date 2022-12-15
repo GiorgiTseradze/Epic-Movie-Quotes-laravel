@@ -9,6 +9,7 @@ components:
         type: integer
         minimum: 1
         default: 1
+        
 
   schemas:
     Id:
@@ -43,3 +44,5 @@ components:
       description: Not Found
     "422":
       description: Unprocessable Content
+    "200":
+      description: success
