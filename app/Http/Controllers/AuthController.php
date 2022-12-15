@@ -74,6 +74,21 @@ class AuthController extends Controller
 		$field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 		$request->merge([$field => $request->input('email')]);
 
+		$user = null;
+		if ($field === 'email')
+		{
+			$user = User::where('email', $request->input('email'))->first();
+		}
+		elseif ($field === 'name')
+		{
+			$user = User::where('name', $request->input('name'))->first();
+		}
+
+		if ($user->email_verified_at === null)
+		{
+			return response()->json(['errors'=>['verification' => 'Email is not verified']], 401);
+		}
+
 		$authenticated = auth()->attempt(
 			[
 				$field     => request()->email,

@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
@@ -15,7 +14,7 @@ class GoogleAuthController extends Controller
 {
 	public function loginWithgoogle()
 	{
-		return Socialite::driver('google')->stateless()->Redirect::to();
+		return Socialite::driver('google')->stateless()->redirect();
 	}
 
 	public function callbackGoogle()
@@ -44,7 +43,7 @@ class GoogleAuthController extends Controller
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return Redirect::to(config('app.VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
+				return redirect(config('app.VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
 			}
 			else
 			{
@@ -55,7 +54,7 @@ class GoogleAuthController extends Controller
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return Redirect::to(config('app.VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
+				return redirect(config('app.VITE_APP_ROOT_NEWSFEED'))->withCookie($cookie);
 			}
 		}
 		catch (\Throwable $th)
