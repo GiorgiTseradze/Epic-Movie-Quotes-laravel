@@ -96,11 +96,6 @@ class AuthController extends Controller
 			}
 		}
 
-		if ($email->email_verified_at === null)
-		{
-			return response()->json(['error' => 'Non primary email is not verified'], 403);
-		}
-
 		if (!$authenticated)
 		{
 			return response()->json('wrong email or password', 401);
