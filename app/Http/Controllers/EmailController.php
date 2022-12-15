@@ -47,6 +47,6 @@ class EmailController extends Controller
 	public function destroy(Email $email): JsonResponse
 	{
 		$email->delete();
-		return response()->json('Movie has been deleted successfully', 200);
+		return response()->json('Email has been deleted successfully', 200);
 	}
 }
