@@ -26,7 +26,7 @@ class EmailController extends Controller
 		$verifyUser = Email::where('email', $request->email)->first();
 		Mail::to($verifyUser->email)->send(new VerifyEmail($user, $verifyUser));
 
-		return response()->json('New email registered', 200);
+		return response()->json('New email registered', 201);
 	}
 
 	public function verify(Request $request): JsonResponse
@@ -47,6 +47,6 @@ class EmailController extends Controller
 	public function destroy(Email $email): JsonResponse
 	{
 		$email->delete();
-		return response()->json('Movie has been deleted successfully', 200);
+		return response()->json('Email has been deleted successfully', 200);
 	}
 }

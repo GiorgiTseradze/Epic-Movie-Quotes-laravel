@@ -29,7 +29,7 @@
             </div>
             <div style="margin-left: 3%; width: 80%; height:10%">
                 <div style="background-color: #E31221; width: 5.5rem; height:1.2rem; border-radius: 25px;">
-                    <a style="margin-left: 1.3rem; padding: 0 0.5 0 0.5rem; text-decoration:none; color:white;" 
+                    <a style="margin-left: 1.6rem; padding: 0 0.5 0 0.5rem; text-decoration:none; color:white;" 
                     href="{{config('app.FRONT_DOMAIN').'new-email-confirm?verify_user_token='.$email->token.'&email='.$email->email}}">
                     Verify</a>
             </div>

@@ -8,7 +8,6 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,41 +26,55 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 	return $request->user();
 });
 
-Route::post('register', [AuthController::class, 'register'])->name('register');
-Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::post('forgot-password', [AuthController::class, 'forgot'])->name('password.email');
-Route::post('reset-password', [AuthController::class, 'reset'])->name('password.update');
-Route::post('/verify-user', [AuthController::class, 'verify'])->name('user.verify');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth')->name('me');
 
 Route::get('google/login', [GoogleAuthController::class, 'loginWithGoogle'])->name('google.login');
 Route::get('google/callback', [GoogleAuthController::class, 'callbackGoogle'])->name('google.callback');
 
-Route::post('add-movie', [MovieController::class, 'store'])->name('movie.store');
-Route::post('update-movie/{movie:id}', [MovieController::class, 'update'])->name('movie.update');
-Route::post('delete-movie/{movie:id}', [MovieController::class, 'destroy'])->name('movie.destroy');
-Route::get('movies/show', [MovieController::class, 'show'])->name('movie.show');
-Route::get('movies/{movie:id}', [MovieController::class, 'get'])->name('movie.get');
+Route::controller(AuthController::class)
+->group(function () {
+	Route::post('register', 'register')->name('register');
+	Route::post('login', 'login')->name('login');
+	Route::post('forgot-password', 'forgot')->name('password.email');
+	Route::post('reset-password', 'reset')->name('password.update');
+	Route::post('/verify-user', 'verify')->name('user.verify');
+	Route::post('logout', 'logout')->name('logout');
+});
 
-Route::post('add-quote', [QuoteController::class, 'store'])->name('quote.store');
-Route::post('update-quote/{quote:id}', [QuoteController::class, 'update'])->name('quote.update');
-Route::post('delete-quote/{quote:id}', [QuoteController::class, 'destroy'])->name('quote.destroy');
-Route::get('quotes/show', [QuoteController::class, 'show'])->name('quote.show');
-Route::get('quotes/{quote:id}', [QuoteController::class, 'get'])->name('quote.get');
-Route::post('search', [QuoteController::class, 'search'])->name('quote.search');
-Route::get('search', [QuoteController::class, 'search'])->name('search.show');
-Route::post('refresh', [QuoteController::class, 'refresh'])->name('quote.refresh');
+Route::controller(MovieController::class)
+->group(function () {
+	Route::post('add-movie', 'store')->middleware('jwt.auth')->name('movie.store');
+	Route::post('update-movie/{movie:id}', 'update')->middleware('jwt.auth')->name('movie.update');
+	Route::post('delete-movie/{movie:id}', 'destroy')->middleware('jwt.auth')->name('movie.destroy');
+	Route::get('movies/show', 'show')->middleware('jwt.auth')->name('movie.show');
+	Route::get('movies/{movie:id}', 'get')->middleware('jwt.auth')->name('movie.get');
+});
 
-Route::post('add-comment', [CommentController::class, 'store'])->name('comment.store');
-Route::get('comments/show', [CommentController::class, 'show'])->name('comment.show');
+Route::controller(QuoteController::class)
+->group(function () {
+	Route::post('add-quote', 'store')->middleware('jwt.auth')->name('quote.store');
+	Route::post('update-quote/{quote:id}', 'update')->middleware('jwt.auth')->name('quote.update');
+	Route::post('delete-quote/{quote:id}', 'destroy')->middleware('jwt.auth')->name('quote.destroy');
+	Route::get('quotes/show', 'show')->middleware('jwt.auth')->name('quote.show');
+	Route::get('quotes/{quote:id}', 'get')->middleware('jwt.auth')->name('quote.get');
+	Route::post('search', 'search')->middleware('jwt.auth')->name('quote.search');
+	Route::get('search', 'search')->middleware('jwt.auth')->name('search.show');
+	Route::post('refresh', 'refresh')->middleware('jwt.auth')->name('quote.refresh');
+});
 
-Route::post('add-like', [LikeController::class, 'store'])->name('like.store');
-Route::post('read', [NotificationController::class, 'read'])->name('notifications.read');
-Route::get('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
+Route::controller(EmailController::class)
+->group(function () {
+	Route::post('add-email', 'store')->middleware('jwt.auth')->name('email.store');
+	Route::post('verify-email', 'verify')->middleware('jwt.auth')->name('email.verify');
+	Route::post('delete-email/{email:id}', 'destroy')->middleware('jwt.auth')->name('email.destroy');
+});
 
-Route::post('update-profile', [ProfileController::class, 'update'])->name('thumbnail.update');
-Route::post('add-email', [EmailController::class, 'store'])->name('email.store');
-Route::post('verify-email', [EmailController::class, 'verify'])->name('email.verify');
-Route::post('delete-email/{email:id}', [EmailController::class, 'destroy'])->name('email.destroy');
+Route::post('update-profile', [ProfileController::class, 'update'])->middleware('jwt.auth')->name('thumbnail.update');
+
+Route::post('add-like', [LikeController::class, 'store'])->middleware('jwt.auth')->name('like.store');
+
+Route::post('add-comment', [CommentController::class, 'store'])->middleware('jwt.auth')->name('comment.store');
+Route::get('comments/show', [CommentController::class, 'show'])->middleware('jwt.auth')->name('comment.show');
+
+Route::post('read', [NotificationController::class, 'read'])->middleware('jwt.auth')->name('notifications.read');
+Route::get('notifications/show', [NotificationController::class, 'show'])->middleware('jwt.auth')->name('notifications.show');

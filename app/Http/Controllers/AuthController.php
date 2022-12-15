@@ -35,7 +35,7 @@ class AuthController extends Controller
 		$verifyUser = User::where('email', $request->email)->first();
 		Mail::to($verifyUser->email)->send(new SignupEmail($user, $token));
 
-		return response()->json('email sent, user registered');
+		return response()->json('email sent, user registered', 200);
 	}
 
 	public function verify(VerifyUserRequest $request): JsonResponse
@@ -63,7 +63,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('verified, logged in')->withCookie($cookie);
+		return response()->json('verified, logged in', 200)->withCookie($cookie);
 	}
 
 	/**
@@ -91,11 +91,8 @@ class AuthController extends Controller
 					'email'    => $loginEmail,
 					'password' => $request->password,
 				]);
+
 				$user = auth()->user();
-				if ($email->email_verified_at === null)
-				{
-					return response()->json(['error' => 'Non primary email is not verified'], 403);
-				}
 			}
 		}
 
@@ -146,7 +143,7 @@ class AuthController extends Controller
 		$user = User::where('email', $request->email)->first();
 		Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
 
-		return response()->json('email sent');
+		return response()->json('email sent', 200);
 	}
 
 	public function reset(ResetPasswordRequest $request): JsonResponse
@@ -167,7 +164,7 @@ class AuthController extends Controller
 
 		DB::table('password_resets')->where('email', $request->email)->delete();
 
-		return response()->json('password changed');
+		return response()->json('password changed', 200);
 	}
 
 	public function logout(): JsonResponse
