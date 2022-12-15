@@ -46,7 +46,7 @@ class ProfileController extends Controller
 		}
 		else
 		{
-			return response()->json(['error' => 'Problem updating user!'], 402);
+			return response()->json(['error' => 'Problem updating user!'], 400);
 		}
 	}
 }
