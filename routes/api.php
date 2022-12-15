@@ -39,7 +39,7 @@ Route::controller(AuthController::class)
 	Route::post('forgot-password', 'forgot')->name('password.email');
 	Route::post('reset-password', 'reset')->name('password.update');
 	Route::post('/verify-user', 'verify')->name('user.verify');
-	Route::get('logout', 'logout')->name('logout');
+	Route::get('logout', 'logout')->middleware('jwt.auth')->name('logout');
 });
 
 Route::controller(MovieController::class)
